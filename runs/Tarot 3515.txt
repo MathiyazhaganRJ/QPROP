@@ -1,0 +1,8 @@
+
+Tarot 3515 400 KV
+
+ 1     ! motor type (brusheless DC)
+
+ 0.085     ! Rmotor (Ohms)
+ 0.5     ! Io     (Amps)
+ 400      ! Kv     (rpm/Volt)

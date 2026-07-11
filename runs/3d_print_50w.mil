@@ -1,0 +1,24 @@
+3D Printed Custom 50W Prop
+
+ 2       ! Nblades
+
+ 0.0000  6.2832    ! CL0    CL_a 
+-0.8000  1.2000    ! CLmin  CLmax
+
+ 0.01000   0.008  0.006  0.40  ! CD0    CD2u   CD2l  CLCD0
+ 150000.0 -0.500               ! REref  REexp
+
+  0.0  0.5  1.0   ! XIdes   (r/R locations where design cl is specified)
+  0.6  0.5  0.4   ! CLdes   (specified cl)
+
+  0.02    !  hub radius(m)
+  0.15    !  tip radius(m) (0.15m = 12-inch prop)
+  5.0     !  speed(m/s)    
+  3000.0  !  rpm           (You can adjust this!)
+
+  0.0     !  Thrust(N)   (Set to 0 because we are specifying Power below)
+  50.0    !  Power(W)    (50 Watts of shaft power!)
+
+ 0   0.0  ! Ldes    KQdes
+
+  30      ! Nout    number of output stations

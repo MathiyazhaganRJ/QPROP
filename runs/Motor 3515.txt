@@ -1,0 +1,7 @@
+Motor 3515
+
+ 1     ! motor type (brushless DC)
+
+ 0.085     ! Rmotor (Ohms)
+ 0.5       ! Io     (Amps)
+ 400      ! Kv     (rpm/Volt)

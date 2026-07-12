@@ -18,14 +18,16 @@ pip install -r requirements.txt
 
 ---
 
-## 1. Create a Geometry Template (QMIL)
-Instead of copying files manually, use the interactive wizard to generate a fresh `.mil` geometry template.
+## 1. Create Geometry & Motor Templates
+Instead of copying files manually, use the interactive wizard to generate fresh `.mil` (propeller) and `.txt` (motor) templates.
 
 ```bash
 qtool template
+qtool motor
 ```
-- It will interactively prompt you for Tip Radius, Speed, RPM, and your choice of Target Thrust or Target Power.
-- The resulting `.mil` file will be saved in your current directory.
+- **`qtool template`**: Will interactively prompt you for Tip Radius, Speed, RPM, and your choice of Target Thrust or Target Power.
+- **`qtool motor`**: Will prompt you for Kv, No-load Current (Io), and Motor Resistance (Rmotor).
+- The resulting `.mil` and `.txt` files will be saved directly in your current directory.
 
 ## 2. Generate Propeller Geometry
 Once you have your `.mil` file, run Mark Drela's native `qmil.exe` to iteratively solve the nonlinear geometry and output the final `.prop` design file.

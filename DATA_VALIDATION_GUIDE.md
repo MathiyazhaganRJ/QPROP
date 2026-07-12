@@ -26,12 +26,11 @@ Absolute physical output parameters should be used as the primary metrics for mo
 *   **Thrust:** Compare QPROP `T(N)` directly to APC `Thrust (N)`.
 *   **Power:** Compare QPROP `Pshaft(W)` directly to APC `PWR (W)`.
 
-## 5. How to Calibrate Your Digital Twin
+## 5. Digital Twin Calibration Methodology
 
-If you simulate a 15x8 propeller at 4000 RPM in QPROP, and compare it to APC's real wind tunnel data for a 15x8 at 4000 RPM, you will often find slight discrepancies. 
+When simulating a known propeller (e.g., a 15x8 propeller at 4000 RPM) in QPROP, theoretical outputs frequently exhibit slight discrepancies when compared against empirical APC wind tunnel data for the identical operating condition.
 
-For example, if QPROP predicts **13.9 N** of thrust but APC measured **11.4 N**:
-1. Open your `.prop` file.
-2. Your theoretical airfoil coefficients (`CLmax`, `CD0`) at the top of the file are likely too "optimistic" compared to the cheap plastic used in real APC props.
-3. Lower the `CLmax` slightly and increase `CD0` (parasitic drag).
-4. Re-run `qtool graph` until your QPROP Thrust and Power columns perfectly match the APC wind tunnel numbers!
+For instance, if QPROP predicts an overly optimistic **13.9 N** of thrust whereas the physical APC propeller yields only **11.4 N**:
+*   **Aerodynamic Adjustment:** The theoretical airfoil coefficients ($C_{Lmax}$, $C_{D0}$) defined at the header of the `.prop` file must be mathematically adjusted to account for the physical inefficiencies of manufactured plastic propellers.
+*   **Iterative Tuning:** To calibrate the digital twin, the $C_{Lmax}$ parameter is incrementally reduced and the $C_{D0}$ (parasitic drag) is incrementally increased within the `.prop` file.
+*   **Validation:** The simulation (`qtool graph`) is re-executed iteratively until the QPROP theoretical Thrust and Power output columns align perfectly with the empirical APC wind tunnel measurements.

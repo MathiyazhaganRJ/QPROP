@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ---
 
 ## 1. Create Geometry & Motor Templates
-Instead of copying files manually, use the interactive wizard to generate fresh `.mil` (propeller) and `.txt` (motor) templates.
+Instead of copying files manually, use the interactive wizard to generate fresh `.mil` (propeller) and `.motor` (motor) templates.
 
 ```bash
 qtool prop
@@ -27,7 +27,7 @@ qtool motor
 ```
 - **`qtool prop`**: Will interactively prompt you for Tip Radius, Speed, RPM, and your choice of Target Thrust or Target Power.
 - **`qtool motor`**: Will prompt you for Kv, No-load Current (Io), and Motor Resistance (Rmotor).
-- The resulting `.mil` and `.txt` files will be saved directly in your current directory.
+- The resulting `.mil` and `.motor` files will be saved directly in your current directory.
 
 ## 2. Generate Propeller Geometry
 Once you have your `.mil` file, run Mark Drela's native `qmil.exe` to iteratively solve the nonlinear geometry and output the final `.prop` design file.
@@ -42,7 +42,7 @@ To test your new propeller attached to a specific motor, use the native `qprop.e
 
 ```bash
 # Syntax: qprop [prop_file] [motor_file] [Speed] [RPM] [Voltage]
-qprop myprop.prop motor.txt 0,30,1 0 22.2 > output.txt
+qprop myprop.prop motor.motor 0,30,1 0 22.2 > output.txt
 ```
 *(In this example, we sweep Airspeed from 0 to 30 m/s in steps of 1, solve for RPM `0`, and fix the Voltage at `22.2`)*
 
@@ -73,8 +73,8 @@ Depending on which variables you lock with `0`, Qprop will perform entirely diff
 
 | Analysis Type | Command Syntax | Description |
 | :--- | :--- | :--- |
-| **Solve for RPM** | `qprop prop.prop motor.txt 15 0 22` | Given 15m/s and 22V, what is the RPM and Thrust? |
-| **Solve for Volts** | `qprop prop.prop motor.txt 15 5000 0` | Given 15m/s and 5000 RPM, how many Volts are required? |
-| **Windmill Mode** | `qprop prop.prop motor.txt 15 0 -22` | (Negative Volts). Calculates regenerative braking. |
+| **Solve for RPM** | `qprop prop.prop motor.motor 15 0 22` | Given 15m/s and 22V, what is the RPM and Thrust? |
+| **Solve for Volts** | `qprop prop.prop motor.motor 15 5000 0` | Given 15m/s and 5000 RPM, how many Volts are required? |
+| **Windmill Mode** | `qprop prop.prop motor.motor 15 0 -22` | (Negative Volts). Calculates regenerative braking. |
 | **Propeller Only** | `qprop prop.prop 15 5000` | Ignores the motor entirely. Pure aerodynamic forces. |
-| **Parameter Sweep**| `qprop prop motor 0,30,1 0 22` | Sweeps the speed from 0 to 30 m/s to generate a graph curve. |
+| **Parameter Sweep**| `qprop prop.prop motor.motor 0,30,1 0 22` | Sweeps the speed from 0 to 30 m/s to generate a graph curve. |

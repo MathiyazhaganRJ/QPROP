@@ -63,7 +63,7 @@ def cmd_prop(args):
         print(f"    (Designed for {thrust} Newtons of Thrust)")
 
 def cmd_motor(args):
-    """Generates a QPROP motor (.txt) file interactively."""
+    """Generates a QPROP motor (.motor) file interactively."""
     print("\033[92m--- Create QPROP Motor File ---\033[0m")
     
     name = args.name if args.name else input("Enter motor name (e.g., Tarot_3515): ").strip()
@@ -75,7 +75,7 @@ def cmd_motor(args):
     io = input("No-load Current Io (Amps) [Default 0.5]: ").strip() or "0.5"
     rm = input("Motor Resistance Rmotor (Ohms) [Default 0.085]: ").strip() or "0.085"
     
-    filename = name if name.endswith(".txt") else f"{name}.txt"
+    filename = name if name.endswith(".motor") else f"{name}.motor"
     
     template = f"""{name}
 
@@ -303,7 +303,7 @@ def main():
    > qmil myprop.mil myprop.prop
 
 {C_BLUE}3. Analyze Propeller & Motor (Native QPROP):{C_RESET}
-   > qprop myprop.prop motor.txt 0,30,1 0 22.2 > output.txt
+   > qprop myprop.prop motor.motor 0,30,1 0 22.2 > output.txt
 
 {C_BLUE}4. Generate AVL-Style Performance Graphs:{C_RESET}
    > qtool graph output.txt "V(m/s)" "T(N)" "eff" "Pshaft(W)"
@@ -315,15 +315,15 @@ def main():
 {C_BOLD}{C_RED}  QPROP SYNTAX{C_RESET}
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
 {C_BLUE}A. Full System (Prop + Motor) - Solve for RPM:{C_RESET}
-   > qprop myprop.prop motor.txt 15 0 22.2
+   > qprop myprop.prop motor.motor 15 0 22.2
    (Speed=15, RPM=0, Volts=22.2)
 
 {C_BLUE}B. Full System - Solve for Voltage:{C_RESET}
-   > qprop myprop.prop motor.txt 15 5000 0
+   > qprop myprop.prop motor.motor 15 5000 0
    (Speed=15, RPM=5000, Volts=0)
 
 {C_BLUE}C. Windmill Mode (Regenerative braking):{C_RESET}
-   > qprop myprop.prop motor.txt 15 0 -22.2
+   > qprop myprop.prop motor.motor 15 0 -22.2
    (Speed=15, RPM=0, Volts=-22.2)
 
 {C_BLUE}D. Propeller Only (No Motor) - Solve for Thrust/Power:{C_RESET}
@@ -331,7 +331,7 @@ def main():
    (Speed=15, RPM=5000)
 
 {C_BLUE}E. Parameter Sweep (Graphing Mode):{C_RESET}
-   > qprop myprop.prop motor.txt 0,30,1 0 22.2
+   > qprop myprop.prop motor.motor 0,30,1 0 22.2
    (Sweeps Speed from 0 to 30 m/s in steps of 1)
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
 """
@@ -349,7 +349,7 @@ def main():
     parser_temp.add_argument("name", type=str, nargs='?', default=None, help="Optional: Name of the propeller")
 
     # Subparser for 'motor'
-    parser_motor = subparsers.add_parser("motor", help="Interactively generate a QPROP motor .txt file")
+    parser_motor = subparsers.add_parser("motor", help="Interactively generate a QPROP motor .motor file")
     parser_motor.add_argument("name", type=str, nargs='?', default=None, help="Optional: Name of the motor")
     
     # Subparser for 'apc'

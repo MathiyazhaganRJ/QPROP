@@ -1,0 +1,4 @@
+Tarot
+  0.085  Rmotor (Ohms)
+  1  Io     (Amps)
+  400  Kv     (rpm/Volt)

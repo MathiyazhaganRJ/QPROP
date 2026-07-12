@@ -1,43 +1,34 @@
-# QPROP vs APC: Data Validation & Correlation Guide
+# QPROP to APC Wind Tunnel Data Correlation Guide
 
-When validating your theoretical QPROP physics model against real-world wind tunnel data (like the APC `.PE0` files), you must apply specific mathematical conversions. Mark Drela (QPROP) and APC use completely different mathematical definitions for the exact same aerodynamic variables.
+This document outlines the standard procedures for validating theoretical QPROP physics models against empirical wind tunnel data provided by APC Propellers (.PE0 files). 
 
-Yes, the APC data is **incredibly useful**. It allows you to "calibrate" your QPROP digital twin. If your QPROP output doesn't match the APC output for the same propeller, you can tweak the airfoil coefficients (`CLmax`, `CD0`) inside your QPROP `.prop` file until the numbers match reality perfectly.
+Due to differing mathematical conventions between Mark Drela's formulations and industry-standard propeller data, specific conversion factors must be applied prior to direct performance comparison.
 
----
+## 1. Velocity (V)
+*   **QPROP:** Outputs flight speed in meters per second (**m/s**).
+*   **APC:** Outputs flight speed in miles per hour (**mph**). 
+*   **Conversion:** $V_{m/s} = V_{mph} \times 0.44704$
 
-## The Correlation Cheat Sheet
+## 2. Advance Ratio (J)
+Both parameters measure the forward distance traveled per revolution, but are non-dimensionalized differently.
+*   **QPROP (`adv`):** Defined as $\frac{V}{\Omega R}$
+*   **APC (`J`):** Defined as $\frac{V}{n D}$ (Industry Standard)
+*   **Conversion:** $J = adv \times \pi$
 
-### 1. Velocity (The X-Axis)
-*   **QPROP:** Outputs flight speed in **m/s**.
-*   **APC:** Outputs flight speed in **mph**. 
-*   *Conversion:* Multiply APC's mph by `0.44704` to get m/s.
+## 3. Aerodynamic Coefficients (CT and CP)
+Raw thrust ($C_T$) and power ($C_P$) coefficients cannot be compared directly between QPROP and APC due to differing reference areas.
+*   **APC Formulation:** $C_T = \frac{T}{\rho n^2 D^4}$
+*   **QPROP Formulation:** $C_T = \frac{T}{\frac{1}{2} \rho V_{tip}^2 \pi R^2}$
+*   **Note:** QPROP's calculated $C_T$ is mathematically smaller than APC's $C_T$ for identical forces by a factor of roughly $3.87$. Direct comparison of these dimensional columns should be avoided.
 
-### 2. Advance Ratio (`adv` vs `J`)
-They both measure how far the prop moves forward per revolution, but are defined differently.
-*   **QPROP (`adv`):** Defined as $V / (\Omega R)$
-*   **APC (`J`):** Defined as $V / (n D)$ *(The industry standard)*
-*   *Conversion:* Multiply QPROP's `adv` by **$\pi$ (3.14159)** to get APC's `J`.
+## 4. Absolute Forces (Thrust and Power)
+Absolute physical output parameters should be used as the primary metrics for model validation.
+*   **Thrust:** Compare QPROP `T(N)` directly to APC `Thrust (N)`.
+*   **Power:** Compare QPROP `Pshaft(W)` directly to APC `PWR (W)`.
 
-### 3. The Coefficients (`CT` and `CP`) - ⚠️ DO NOT COMPARE DIRECTLY
-You cannot compare the raw $C_T$ and $C_P$ columns between QPROP and APC. They use completely different non-dimensionalization formulas.
-*   **APC (Standard):** $C_T = \frac{Thrust}{\rho \cdot n^2 \cdot D^4}$
-*   **QPROP (Drela):** $C_T = \frac{Thrust}{\frac{1}{2} \rho \cdot V_{tip}^2 \cdot \pi R^2}$
-*   *Conversion:* Drela's $C_T$ is mathematically $\sim 3.87$ times smaller than APC's $C_T$ for the exact same propeller. It is safer to ignore these columns and compare the physical real-world forces below.
-
-### 4. Real-World Forces (Thrust and Watts) - ✅ SAFE TO COMPARE
-These are absolute physical units and can be compared 1-to-1 to calibrate your model.
-*   **Thrust:** Compare QPROP's `T(N)` directly to APC's `Thrust (N)`.
-*   **Power:** Compare QPROP's `Pshaft(W)` directly to APC's `PWR (W)`.
-
----
-
-## How to Calibrate Your Digital Twin
-
-If you simulate a 15x8 propeller at 4000 RPM in QPROP, and compare it to APC's real wind tunnel data for a 15x8 at 4000 RPM, you will often find slight discrepancies. 
-
-For example, if QPROP predicts **13.9 N** of thrust but APC measured **11.4 N**:
-1. Open your `.prop` file.
-2. Your theoretical airfoil coefficients (`CLmax`, `CD0`) at the top of the file are likely too "optimistic" compared to the cheap plastic used in real APC props.
-3. Lower the `CLmax` slightly and increase `CD0` (parasitic drag).
-4. Re-run `qtool graph` until your QPROP Thrust and Power columns perfectly match the APC wind tunnel numbers!
+## 5. Digital Twin Calibration Procedure
+To accurately correlate a QPROP theoretical model with APC empirical data:
+1. Generate the propeller geometry and run the QPROP simulation at identical RPM intervals as the corresponding APC dataset.
+2. Compare the resulting absolute Thrust (N) and Power (W) outputs.
+3. If QPROP over-predicts theoretical performance, open the `.prop` file and mathematically adjust the empirical airfoil coefficients located at the file header (e.g., reduce $C_{Lmax}$, increase $C_{D0}$).
+4. Iterate the simulation until the theoretical QPROP force vectors precisely align with the physical APC wind tunnel bounds.

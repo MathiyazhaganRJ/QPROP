@@ -22,10 +22,10 @@ pip install -r requirements.txt
 Instead of copying files manually, use the interactive wizard to generate fresh `.mil` (propeller) and `.txt` (motor) templates.
 
 ```bash
-qtool template
+qtool prop
 qtool motor
 ```
-- **`qtool template`**: Will interactively prompt you for Tip Radius, Speed, RPM, and your choice of Target Thrust or Target Power.
+- **`qtool prop`**: Will interactively prompt you for Tip Radius, Speed, RPM, and your choice of Target Thrust or Target Power.
 - **`qtool motor`**: Will prompt you for Kv, No-load Current (Io), and Motor Resistance (Rmotor).
 - The resulting `.mil` and `.txt` files will be saved directly in your current directory.
 

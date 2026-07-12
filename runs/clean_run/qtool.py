@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 if os.name == 'nt':
     os.system("color")
 
-def cmd_template(args):
+def cmd_prop(args):
     """Generates a QMIL (.mil) template interactively."""
-    print("\033[96m--- Create QMIL Design Template ---\033[0m")
+    print("\033[92m--- Create QMIL Propeller Template ---\033[0m")
     
     name = args.name if args.name else input("Enter propeller name (e.g., custom_prop): ").strip()
     if not name:
@@ -64,7 +64,7 @@ def cmd_template(args):
 
 def cmd_motor(args):
     """Generates a QPROP motor (.txt) file interactively."""
-    print("\033[96m--- Create QPROP Motor File ---\033[0m")
+    print("\033[92m--- Create QPROP Motor File ---\033[0m")
     
     name = args.name if args.name else input("Enter motor name (e.g., Tarot_3515): ").strip()
     if not name:
@@ -293,7 +293,7 @@ def main():
 {C_BOLD}{C_RED}  qtool / QPROP WORKFLOW COMMANDS{C_RESET}
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
 {C_BLUE}1. Create Geometry & Motor Templates:{C_RESET}
-   > qtool template
+   > qtool prop
    > qtool motor
 
 {C_BLUE}2. Generate Propeller Geometry (Native QMIL):{C_RESET}
@@ -341,8 +341,8 @@ def main():
     
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     
-    # Subparser for 'template'
-    parser_temp = subparsers.add_parser("template", help="Interactively generate a QMIL .mil geometry template")
+    # Subparser for 'prop'
+    parser_temp = subparsers.add_parser("prop", help="Interactively generate a QMIL .mil propeller geometry template")
     parser_temp.add_argument("name", type=str, nargs='?', default=None, help="Optional: Name of the propeller")
 
     # Subparser for 'motor'
@@ -362,8 +362,8 @@ def main():
 
     args = parser.parse_args()
     
-    if args.command == "template":
-        cmd_template(args)
+    if args.command == "prop":
+        cmd_prop(args)
     elif args.command == "motor":
         cmd_motor(args)
     elif args.command == "apc":

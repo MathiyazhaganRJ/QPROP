@@ -62,6 +62,30 @@ def cmd_template(args):
     else:
         print(f"    (Designed for {thrust} Newtons of Thrust)")
 
+def cmd_motor(args):
+    """Generates a QPROP motor (.txt) file interactively."""
+    print("\033[96m--- Create QPROP Motor File ---\033[0m")
+    
+    name = args.name if args.name else input("Enter motor name (e.g., Tarot_3515): ").strip()
+    if not name:
+        print("\033[91m[-] Error: Motor name is required.\033[0m")
+        return
+        
+    kv = input("Motor Kv (rpm/Volt) [Default 400]: ").strip() or "400"
+    io = input("No-load Current Io (Amps) [Default 0.5]: ").strip() or "0.5"
+    rm = input("Motor Resistance Rmotor (Ohms) [Default 0.085]: ").strip() or "0.085"
+    
+    filename = name if name.endswith(".txt") else f"{name}.txt"
+    
+    template = f"""{name}
+  {rm}  Rmotor (Ohms)
+  {io}  Io     (Amps)
+  {kv}  Kv     (rpm/Volt)
+"""
+    with open(filename, 'w') as f:
+        f.write(template)
+    print(f"\n\033[92m[+] Successfully generated motor file: {filename}\033[0m")
+
 def cmd_apc(args):
     """Converts APC .PE0 data to QPROP metric .prop data."""
     input_file = args.input_pe0
@@ -268,8 +292,9 @@ def main():
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
 {C_BOLD}{C_RED}  qtool / QPROP WORKFLOW COMMANDS{C_RESET}
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
-{C_BLUE}1. Create Geometry Template:{C_RESET}
+{C_BLUE}1. Create Geometry & Motor Templates:{C_RESET}
    > qtool template
+   > qtool motor
 
 {C_BLUE}2. Generate Propeller Geometry (Native QMIL):{C_RESET}
    > qmil myprop.mil myprop.prop
@@ -319,6 +344,10 @@ def main():
     # Subparser for 'template'
     parser_temp = subparsers.add_parser("template", help="Interactively generate a QMIL .mil geometry template")
     parser_temp.add_argument("name", type=str, nargs='?', default=None, help="Optional: Name of the propeller")
+
+    # Subparser for 'motor'
+    parser_motor = subparsers.add_parser("motor", help="Interactively generate a QPROP motor .txt file")
+    parser_motor.add_argument("name", type=str, nargs='?', default=None, help="Optional: Name of the motor")
     
     # Subparser for 'apc'
     parser_apc = subparsers.add_parser("apc", help="Convert APC .PE0 data to QPROP metric .prop format")
@@ -335,6 +364,8 @@ def main():
     
     if args.command == "template":
         cmd_template(args)
+    elif args.command == "motor":
+        cmd_motor(args)
     elif args.command == "apc":
         cmd_apc(args)
     elif args.command == "graph":

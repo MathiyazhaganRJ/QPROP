@@ -266,10 +266,10 @@ def main():
 
     help_epilog = f"""
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
-{C_BOLD}{C_RED}  QSUITE / QPROP WORKFLOW COMMANDS{C_RESET}
+{C_BOLD}{C_RED}  qtool / QPROP WORKFLOW COMMANDS{C_RESET}
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
 {C_BLUE}1. Create Geometry Template:{C_RESET}
-   > qsuite template
+   > qtool template
 
 {C_BLUE}2. Generate Propeller Geometry (Native QMIL):{C_RESET}
    > qmil myprop.mil myprop.prop
@@ -278,10 +278,10 @@ def main():
    > qprop myprop.prop motor.txt 0,30,1 0 22.2 > output.txt
 
 {C_BLUE}4. Generate AVL-Style Performance Graphs:{C_RESET}
-   > qsuite graph output.txt "V(m/s)" "T(N)" "eff" "Pshaft(W)"
+   > qtool graph output.txt "V(m/s)" "T(N)" "eff" "Pshaft(W)"
 
 {C_BLUE}5. Convert APC Wind Tunnel Data:{C_RESET}
-   > qsuite apc 15x8E-PERF.PE0 15x8_metric.prop
+   > qtool apc 15x8E-PERF.PE0 15x8_metric.prop
 
 {C_BOLD}{C_GREEN}============================================================{C_RESET}
 {C_BOLD}{C_RED}  QPROP SYNTAX{C_RESET}
@@ -309,7 +309,7 @@ def main():
 """
 
     parser = argparse.ArgumentParser(
-        description=f"{C_BOLD}{C_RED}QSuite: The Terminal Command Line tool for QPROP/QMIL.{C_RESET}",
+        description=f"{C_BOLD}{C_RED}qtool: The Terminal Command Line tool for QPROP/QMIL.{C_RESET}",
         formatter_class=argparse.RawTextHelpFormatter,
         epilog=help_epilog
     )

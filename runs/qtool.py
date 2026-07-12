@@ -78,9 +78,12 @@ def cmd_motor(args):
     filename = name if name.endswith(".txt") else f"{name}.txt"
     
     template = f"""{name}
-  {rm}  Rmotor (Ohms)
-  {io}  Io     (Amps)
-  {kv}  Kv     (rpm/Volt)
+
+  1     ! motor type (brushless)
+
+  {rm}  ! Rmotor (Ohms)
+  {io}  ! Io     (Amps)
+  {kv}  ! Kv     (rpm/Volt)
 """
     with open(filename, 'w') as f:
         f.write(template)

@@ -82,3 +82,23 @@ Example for a 10 m/s dive:
 1.  **Find the Sweet Spot:** Look down the `Pelec` (Electrical Power) column. The largest **NEGATIVE** number is your maximum charging rate in Watts. The RPM for that row is the speed your ESC must hold to harvest that power.
 2.  **Find the Drag Penalty:** Look at the `T(N)` column for that exact row. This negative number is the massive aerodynamic drag penalty your airframe is paying to harvest that electricity. 
 3.  **Find Free-Wheeling:** Keep increasing the RPM in your sweep until `Pshaft(W)` crosses exactly to `0.0`. That is your propeller's true, frictionless free-wheeling speed for that wind condition.
+
+---
+
+## 6. Pitch Speed and Regenerative Braking
+
+"Pitch Speed" is the theoretical forward speed a propeller would travel if it were acting like a perfect screw in solid wood ($V_{pitch} = \text{RPM} \times \text{Pitch}$). 
+
+When analyzing telemetry or simulation data, Pitch Speed is the defining boundary between normal flight and regenerative braking:
+
+*   **Flying Slower than Pitch Speed:** The propeller is "biting" into the air, creating a positive Angle of Attack. The motor burns power (`Pelec > 0`) to push the airplane forward (`T > 0`).
+*   **Flying Faster than Pitch Speed:** The wind physically catches up to the propeller, crashing into the curved "top" of the blades. This creates a **Negative Angle of Attack**, mathematically visible when `cl_avg` goes negative.
+
+### The Regenerative Braking Energy Pipeline
+When you fly faster than your pitch speed (e.g., diving at 10 m/s but commanding a slow 3000 RPM), the QPROP outputs tell the complete story of regenerative braking:
+
+1.  **`cl_avg` (Negative):** Confirms the blade is flying "upside down" with a negative angle of attack.
+2.  **`Pprop` (Negative):** Also known as Propulsive Power ($Thrust \times Velocity$). A negative `Pprop` means the propeller is acting as an air-brake, actively draining mechanical kinetic energy from your airframe's momentum.
+3.  **`Pelec` (Negative):** The motor acts as a generator. A negative `Pelec` confirms that electricity is flowing backward through your ESC to successfully recharge your battery.
+
+*Note: The difference between the kinetic energy drained (`Pprop`) and the electrical energy harvested (`Pelec`) represents your system's inefficiencies, lost to motor heat and aerodynamic turbulence.*
